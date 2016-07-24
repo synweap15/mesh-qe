@@ -14,8 +14,9 @@ class QueryExpander():
 
     def expand_query_from_topic_file(self, file_path, nth_topic):
         xml_data = elemtree.parse(file_path)
-        for element in xml_data.findall("//topic[@number='{}']".format(nth_topic)):
-            return self.expand_query_from_string(element.find("./summary").text)
+        node = xml_data.findall("//topic[@number='{}']".format(nth_topic))[0]
+
+        return self.expand_query_from_string(node.find("./summary").text)
 
     def expand_query_from_string(self, query):
         return self.free_mti.query(query)
