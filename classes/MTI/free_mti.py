@@ -11,7 +11,7 @@ class FreeMTI():
             "InputText": (None, text),
             "Filtering": (None, "opt1_DCMS"),
             "showDUIs": (None, "showDUIs"),
-            "Output": (None, "Detail"),
+            "Output": (None, "detail"),
             "Advanced": (None, "0"),
             "topn": (None, "25"),
             "mm1": (None, "7"),
@@ -38,13 +38,30 @@ class FreeMTI():
             return self.parse_response(response.text)
         raise ConnectionError("Problem with response from MTI")
 
-    def parse_response(self, text):
+
+    def extract_information_from_response(self, text):
         content = BeautifulSoup(text, "html.parser")
         pre = content.find_all("pre")[-1]
         for tag in pre.find_all("b"):
             tag.clear()
 
-        return  pre.get_text().strip().split("\n")
+        return pre.get_text().strip()
+
+
+    def parse_response(self, text):
+        cleared_text = self.extract_information_from_response(text)
+        result = []
+        for line in cleared_text.split("\n"):
+            line_list = line.split("|")
+            result.append({
+                "mesh_id": line_list[8] if len(line_list) >= 9 else -1,
+                "concept_name": line_list[1].replace("*", ""),
+                "umls_id": line_list[2],
+                "comments": line_list[5],
+                "raw": line
+            })
+
+        return result
 
 
 if __name__ == "__main__":
