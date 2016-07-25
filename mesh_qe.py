@@ -7,15 +7,12 @@ def main():
     parser = argparse.ArgumentParser(description="MeSH query expansion example")
 
     parser.add_argument("--mesh-path", action="store", dest="mesh_path", default=".",
-                        help="Path to MeSH files "
-                             "(unused for now)")
+                        help="Path to MeSH files")
     parser.add_argument("--traverse-tree-up", action="store_true", dest="traverse_tree_up", default=False,
-                        help="Whether to traverse the MeSH ontology tree up if a match is found "
-                             "(unused for now)")
-    parser.add_argument("--traverse-tree-up-limit", action="store", dest="traverse_tree_up_limit", default=3,
+                        help="Whether to traverse the MeSH ontology tree up if a match is found")
+    parser.add_argument("--traverse-tree-up-limit", action="store", dest="traverse_tree_up_limit", default=3, type=int,
                         help="How many levels of the ontology hierarchy tree nodes should be included "
-                             "when a match is found "
-                             "(unused for now)")
+                             "when a match is found")
 
     parser.add_argument_group()
     group = parser.add_mutually_exclusive_group()
